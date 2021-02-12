@@ -24,6 +24,7 @@ module.exports = (app) => {
           nome: usuario.nome,
           usuario: usuario.email,
           token: jwt.encode(payload, authSecret),
+          usuarioId: usuario.id
         })
       })
     } else {

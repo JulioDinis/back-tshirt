@@ -40,6 +40,13 @@ module.exports = (app) => {
       .then((tamanho) => res.json(tamanho))
       .catch((err) => res.status(400).json(err))
   }
+  const getTamanhoByProdutoId = (req, res) => {
+    app
+      .db("tamanho_produto")
+      .where({ produtoId: req.params.id })
+      .then((tamanho) => res.json(tamanho))
+      .catch((err) => res.status(400).json(err))
+  }
 
-  return { save, update, getTamanho, getTamanhoById }
+  return { save, update, getTamanho, getTamanhoById, getTamanhoByProdutoId }
 }

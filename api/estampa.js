@@ -85,6 +85,32 @@ module.exports = (app) => {
       .then((estampa) => res.json(estampa))
       .catch((err) => res.status(400).json(err))
   }
+  const getEstampasByDescricao = (req, res) => {
+    app
+      .db("estampa")
+      .where('descricao', 'like', `%${req.params.descricao}%`)
+      .then((estampas) => {
+        console.log('get Estampas ' + req.params.descricao)
+        estampas.forEach(estampa => {
+          
+            app
+              .db("imagem_estampa")
+              .where({ estampaId: estampa.id })
+              .then((imagem) => {
+                console.log(imagem)
+               estampa.imagens = imagem
+              })
+              .catch((err) => {
+                console.log(err)
+                
+              })
+
+
+        });
+        res.json(estampas)
+      })
+      .catch((err) => res.status(400).json(err))
+  }
   const getImagensByID = (req, res) => {
     app
       .db("imagem_estampa")
@@ -139,5 +165,13 @@ module.exports = (app) => {
       })
   }
 
-  return { save, upload, update, getEstampas, getEstampasByID, getImagensByID }
+  return {
+    save,
+    upload,
+    update,
+    getEstampas,
+    getEstampasByID,
+    getImagensByID,
+    getEstampasByDescricao,
+  }
 }

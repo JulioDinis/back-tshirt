@@ -1,5 +1,3 @@
-// id, busto_torax,  cintura sigla
-
 const { authSecret } = require("../.env")
 const jwt = require("jwt-simple")
 const bcrypt = require("bcrypt-nodejs")
@@ -14,19 +12,70 @@ module.exports = (app) => {
   }
 
   //salva no bd
+  //  id | bairro | cep | cidade | complemento | destinatario | estado | numero | rua | principal | clienteId
   const save = (req, res) => {
-    const senha = hash
+    console.log(req)
     app
-      .db("administrador")
+      .db("endereco")
       .insert({
-        usuario: req.body.usuario,
-        senha,
+        bairro: req.body.bairro,
+        cep: req.body.cep,
+        cidade: req.body.cidade,
+        complemento: req.body.complemento,
+        destinatario: req.body.destinatario,
+        estado: req.body.estado,
+        numero: req.body.numero,
+        rua: req.body.rua,
+        principal: req.body.principal,
+        clienteId: req.body.cliente,
       })
       .then((_) => res.status(204).send())
-      .catch((err) => res.status(400).json(err))
+      .catch((err) => {
+        console.log(err)
+        res.status(400).json(err)
+      })
   }
-  // signin adm
   const editar = async (req, res) => {}
+  const remove = async (req, res) => {
+    app
+      .db("endereco")
+      .where("id", req.params.id)
+      .del()
+      .then((_) => {
+        res.status(204).send("removido")
+      })
+      .catch((err) => {
+        console.log(err)
+        res.status(404).json(err)
+      })
+  }
+  const getEndereco = async (req, res) => {
+    app
+      .db("endereco")
+      .distinct()
+      .then((enderecos) => {
+        console.log("getEndereco")
+        res.json(enderecos)
+      })
+      .catch((err) => {
+        res.status(400).json(err)
+        console.log(err)
+      })
+  }
+  const getEnderecoByClienteId = async (req, res) => {
+    app
+      .db("endereco")
+      .where({ clienteId: req.params.id })
+      .distinct()
+      .then((enderecos) => {
+        console.log("getEnderecoByClienteId")
+        res.json(enderecos)
+      })
+      .catch((err) => {
+        res.status(400).json(err)
+        console.log(err)
+      })
+  } 
 
-  return { save, editar }
+  return { save, editar, getEnderecoByClienteId, getEndereco, remove }
 }

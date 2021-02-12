@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt-nodejs")
 const moment = require("moment")
 
 const fileUpload = require("express-fileupload")
@@ -36,7 +35,7 @@ module.exports = (app) => {
                   produtoId: id,
                   quantidade: "100",
                 })
-                .then((_) => res.status(204).send())
+                .then((_) => res.status(204).send({ msg: 'yep!'}))
                 .catch((err) => {
                   console.log(`Erro ao inserir na tabela tamanho ${err}`)
                 })
@@ -45,7 +44,7 @@ module.exports = (app) => {
               console.log("Não rolou" + err)
             })
         })
-        res.status(204).send({ msg: "Yep!" })
+       /// res.status(204).send({ msg: "Yep!" })
         // Use the mv() method to place the file somewhere on your server
       })
       .catch((err) => {
@@ -124,7 +123,7 @@ module.exports = (app) => {
       const imagens = req.body.novasImagens
 
       imagens.forEach((imagem) => {
-        caminho = "http://localhost:3003" + imagem
+        caminho = "http://localhost:3003/produtos" + imagem
 
         console.log(caminho)
         app
