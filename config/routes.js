@@ -69,4 +69,10 @@ module.exports = (app) => {
   app.get("/pedido", app.api.pedido.getPedidos)
   app.get("/pedido/:id", app.api.pedido.getPedidoById)
   app.get("/pedido/cliente/:id", app.api.pedido.getPedidosByClienteId)
+
+  // Promoção
+  app.post("/promocao", app.api.promocao.save)
+  app.get("/promocao", app.api.promocao.getPromocao)
+  app.get("/promocao/:id", app.api.promocao.getPromocaoById)
+
 }

@@ -6,7 +6,7 @@ const db = require('./config/database')
 const consign = require('consign')
 
 consign()
-  .include('./config/passport.js')
+  .include('./config/passaport.js')
   .then('./config/middlewares.js')
   .then('./api')
   .then('./config/routes.js')
