@@ -35,7 +35,7 @@ module.exports = (app) => {
                   produtoId: id,
                   quantidade: "100",
                 })
-                .then((_) => res.status(204).send({ msg: 'yep!'}))
+                .then((_) => res.status(204).send({ msg: "yep!" }))
                 .catch((err) => {
                   console.log(`Erro ao inserir na tabela tamanho ${err}`)
                 })
@@ -44,7 +44,7 @@ module.exports = (app) => {
               console.log("Não rolou" + err)
             })
         })
-       /// res.status(204).send({ msg: "Yep!" })
+        /// res.status(204).send({ msg: "Yep!" })
         // Use the mv() method to place the file somewhere on your server
       })
       .catch((err) => {
@@ -90,7 +90,7 @@ module.exports = (app) => {
   const getProdutos = (req, res) => {
     app
       .db("produto")
-      .where({disponivel: 'true'})
+      .where({ disponivel: "true" })
       .orderBy("data_cadastro")
       .then((produtos) => res.json(produtos))
       .catch((err) => res.status(400).json(err))
@@ -116,15 +116,35 @@ module.exports = (app) => {
         res.status(400).json(err)
       })
   }
+  const getProdutosByDescricao = (req, res) => {
+    app
+      .db("produto")
+      .where("descricao", "like", `%${req.params.descricao}%`)
+      .then((produtos) => {
+        console.log("get Produto " + req.params.descricao)
+        produtos.forEach((produto) => {
+          app
+            .db("imagem_produto")
+            .where({ produtoId: produto.id })
+            .then((imagem) => {
+              produto.imagens = imasgem
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        })
+        console.log(produtos)
+        res.json(produtos)
+      })
+      .catch((err) => res.status(400).json(err))
+  }
   const update = (req, res) => {
     console.log("Atualizando...")
     console.log(req.body)
     if (req.body.novasImagens) {
       const imagens = req.body.novasImagens
-
       imagens.forEach((imagem) => {
         caminho = "http://localhost:3003/produtos" + imagem
-
         console.log(caminho)
         app
           .db("imagem_produto")
@@ -136,7 +156,7 @@ module.exports = (app) => {
             if (response.length > 0) {
               console.log("imagem já cadastrada")
             } else {
-             inserirImagemProduto(req.params.id, caminho)
+              inserirImagemProduto(req.params.id, caminho)
             }
           })
           .catch((err) => {
@@ -171,8 +191,16 @@ module.exports = (app) => {
         console.log(err)
         res.status(404).json(err)
       })
-    
   }
 
-  return { save, getProdutos, getProdutosById, upload, getImagensById, update, remove }
+  return {
+    save,
+    getProdutos,
+    getProdutosById,
+    getProdutosByDescricao,
+    upload,
+    getImagensById,
+    update,
+    remove,
+  }
 }

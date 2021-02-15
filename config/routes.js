@@ -52,6 +52,7 @@ module.exports = (app) => {
   // remover
   app.delete("/produto/:id", app.api.produto.remove)
   app.get("/produto/:id", app.api.produto.getProdutosById)
+  app.get("/produto/busca/:descricao", app.api.produto.getProdutosByDescricao)
   //Buscar Imagem pelo ID do produto
   app.get("/produto/img/:id", app.api.produto.getImagensById)
 
