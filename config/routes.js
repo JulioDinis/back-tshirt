@@ -24,8 +24,9 @@ module.exports = (app) => {
   app.put("/estampa/:id", app.api.estampa.update)
   //busca
   app.get("/estampa", app.api.estampa.getEstampas)
+  app.get("/estampa/busca", app.api.estampa.getEstampas)
   app.get("/estampa/:id", app.api.estampa.getEstampasByID)
-   app.get("/estampa/busca/:descricao", app.api.estampa.getEstampasByDescricao)
+  app.get("/estampa/busca/:descricao", app.api.estampa.getEstampasByDescricao)
   //upload de imagem
   app.post("/produto/upload", app.api.produto.upload)
   //buscar imagens

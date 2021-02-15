@@ -127,7 +127,7 @@ module.exports = (app) => {
             .db("imagem_produto")
             .where({ produtoId: produto.id })
             .then((imagem) => {
-              produto.imagens = imasgem
+              produto.imagens = imagem
             })
             .catch((err) => {
               console.log(err)

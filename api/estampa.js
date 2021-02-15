@@ -66,6 +66,7 @@ module.exports = (app) => {
   }
 
   const getEstampas = (req, res) => {
+    console.log("yasj")
     app
       .db("estampa")
       .distinct()
@@ -85,33 +86,54 @@ module.exports = (app) => {
       .then((estampa) => res.json(estampa))
       .catch((err) => res.status(400).json(err))
   }
+
+  
+  // const getEstampasByDescricao = (req, res) => {
+  //   let retorno = new Array()
+  //   app
+  //     .db("estampa")
+  //     .join("imagem_estampa", "estampa.id", "=", "imagem_estampa.estampaId")
+  //     .where("descricao", "like", `%${req.params.descricao}%`)
+  //     .then((estampas) => {
+  //       estampas.forEach((estampa) => {
+  //         app
+  //           .db("imagem_estampa")
+  //           .where({ estampaId: estampa.id })
+  //           .then((imagem) => {
+  //             estampa.imagens = imagem
+  //             retorno.push(estampa)
+  //             console.log(retorno)
+  //           })
+  //           .catch((err) => {
+  //             console.log(err)
+  //           })
+  //       })
+  //       console.log(retorno)
+  //       res.json(estampas)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //       res.status(400).json(err)
+  //     })
+  // }
+
   const getEstampasByDescricao = (req, res) => {
-    app
-      .db("estampa")
-      .where('descricao', 'like', `%${req.params.descricao}%`)
-      .then((estampas) => {
-        console.log('get Estampas ' + req.params.descricao)
-        estampas.forEach(estampa => {
-          
-            app
-              .db("imagem_estampa")
-              .where({ estampaId: estampa.id })
-              .then((imagem) => {
-                console.log(imagem)
-               estampa.imagens = imagem
-              })
-              .catch((err) => {
-                console.log(err)
-                
-              })
-
-
-        });
-        res.json(estampas)
-      })
-      .catch((err) => res.status(400).json(err))
+    let retorno = new Array()
+      app
+        .db("estampa")
+        .where("descricao", "like", `%${req.params.descricao}%`)
+        .then((estampas) => {
+          console.log(estampas)
+          res.json(estampas)
+        })
+        .catch((err) => {
+          console.log(err)
+          res.status(400).json(err)
+        })
+    
   }
   const getImagensByID = (req, res) => {
+    console.log("get Imagens")
     app
       .db("imagem_estampa")
       .where({ estampaId: req.params.id })
