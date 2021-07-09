@@ -46,6 +46,8 @@ module.exports = (app) => {
       .then((pedidos) => res.json(pedidos))
       .catch((err) => res.status(400).json(err))
   }
-
-  return { save, update, getPedidos, getPedidoById, getPedidosByClienteId }
+  const getClientesFrequentes = (req, res) => {
+    console.log('busca clientes frequentes')
+  }
+  return { save, update, getPedidos, getPedidoById, getPedidosByClienteId, getClientesFrequentes }
 }
